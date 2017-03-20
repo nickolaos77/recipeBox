@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>React Recipe Box</title>
+    <link href='main.css' type="text/css" rel='stylesheet' />
+
+    <link href='./dialog-polyfill.css' type="text/css" rel='stylesheet' />
+    <style>
+        html {
+            height: 100vh;
+        }
+        
+        body {
+            margin: 0;
+            height: 100%;
+            background: green;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            height: 90%;
+            width: 90%;
+            margin: auto;
+        }
+        
+        #recipeContainer {
+            width: 90%;
+            background: #F5F5F5;
+            margin: auto;
+            margin-top: 20px;
+            border: 1px solid red;
+            border-radius: 5px;
+            min-width: 270px;
+        }
+        
+        .recipe {
+            width: 95%;
+            background: #dff0d8;
+            margin-left: 2.5%;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            color: green;
+            box-sizing: border-box;
+        }
+        
+        .recipe > h4:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .recipe:first-child {
+            margin-top: 20px;
+        }
+        
+        .recipe:last-child {
+            margin-bottom: 40px;
+        }
+        
+        button {
+            height: 40px;
+            background: #337ab7;
+            border: 2px solid #337ab7;
+            border-radius: 5px;
+            margin: 20px 5%;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: #204d74;
+            border: 2px solid #204d74;
+            cursor: pointer;
+        }
+        
+        h4 {
+            padding: 15px;
+            margin: 0px;
+        }
+        
+        .ingredients {
+            background: white;
+            text-align: center;
+            color: black;
+            padding: 10px 3%;
+            display: flex;
+            flex-direction: column;
+            /*                display:none;*/
+        }
+        
+        .ingredientsContainer {
+            border: 1px solid lightgrey;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .ingredientsContainer p {
+            border: 1px solid lightgrey;
+            margin: 0px;
+            padding: 8px;
+        }
+        
+        .buttonContainer {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .danger {
+            background: #c9302c;
+            border: 2px solid #c9302c;
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        .danger:hover {
+            background: #ac2925;
+            border: 2px solid #ac2925;
+        }
+        
+        .default {
+            background: white;
+            border: 2px solid lightgrey;
+            color: black;
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        .default:hover {
+            background: lightgrey;
+        }
+        
+        dialog{
+            border: 1px solid grey;
+            width: 60vw;
+            min-width: 162px;
+        }
+        
+        input, textarea {
+            color: grey;
+            border-radius: 5px;
+        }
+        
+        .flexContWind {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #window h4 {
+            margin: 10px 0px;
+            padding: 0px;
+        }
+        
+        #window input {
+            flex: 1;
+        }
+        
+        .flexContWind hr {
+            flex: 1;
+            /*  A simple flex:1 will not do the trick (see link 5) the margin lines are necessary */
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .flexContWind > h4:last-of-type {
+            margin-top: 30px !important;
+        }
+        #titleFlexContainer {
+            display: flex; 
+            flex-direction: row;   
+        }
+        #titleFlexContainer h3{
+            flex:1; 
+            margin-top:0px;
+        }
+        
+        #titleFlexContainer span{
+           color:darkgrey;
+           height:15px;
+        }
+        #titleFlexContainer span:hover{
+              cursor: pointer;
+              color:black;
+        }
+        
+        .windowButtonContainer{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+        
+        textarea{
+            text-align: left;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class='container'>
+        <div id='recipeContainer'>
+            <div class='recipe'>
+                <h4>Pumpkin Pie</h4>
+                <div class='ingredients'>
+                    <h4>Ingredients</h4>
+                    <hr/>
+                    <div class='ingredientsContainer'>
+                        <p>Ingredient 1</p>
+                        <p>Ingredient 2</p>
+                        <p>Ingredient 3</p>
+                        <p>Ingredient 4</p>
+                    </div>
+                    <div class='buttonContainer'>
+                        <button class="danger">
+                            Delete
+                        </button>
+                        <button class="default" id="show">
+                            Edit
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <div class='recipe'>
+                <h4>Spaghetti</h4>
+            </div>
+            <div class='recipe '>
+                <h4>Onion Pie</h4>
+            </div>
+        </div>
+        <button>Add Recipe</button>
+    </div>
+
+    <dialog id="window">
+        <div class='flexContWind'>
+            <div id='titleFlexContainer'>
+              <h3 >Edit Recipe!</h3>
+              <span id='x'>x</span>   
+            </div>    
+            <hr/>
+            <h4>Recipe</h4>
+            <input value='Spaghetti'>
+            <h4>Ingredients</h4>
+            <textarea rows="4" cols="40">Comma seperaged ingredients</textarea>
+            <div class='windowButtonContainer'>
+           <button id="editRecipe">Edit Recipe</button>  
+           <button id="close" class='default' style='flex:none; margin:20px 0;'>Close</button>
+            </div>    
+        </div>
+    </dialog>
+
+    <!-- Form
+ <dialog id="window">
+  <form method="dialog">
+    <p>Do you agree with terms of use?</p>
+    <textarea class="form-control" disabled>Lorem ipsum dolor sit amet,....</textarea>
+    <button type="submit" value="yes">Yes</button>
+    <button type="submit" value="no" autofocus>No</button>
+  </form>
+</dialog>
+-->
+
+
+
+
+    <script src="./dialog-polyfill.js"></script>
+    <script>
+        (function () {
+            var node = document.querySelector(".container");
+            var dialog = document.getElementById('window');
+            dialogPolyfill.registerDialog(dialog);
+            document.getElementById('show').onclick = function () {
+                dialog.showModal();
+                console.log('B');
+                //node.className += " opaque"; 
+            };
+
+            document.getElementById('exit').onclick = function () {
+                dialog.close();
+            };
+
+
+
+        })();
+    </script>
+</body>
+<!--
+
+--------------------------Links -----------------------------------
+1. https://demo.agektmr.com/dialog/
+2. https://github.com/GoogleChrome/dialog-polyfill 
+3. https://developers.google.com/web/updates/2013/09/dialog-element-Modals-made-easy
+4. http://www.hongkiat.com/blog/html5-dialog-window/
+5. http://stackoverflow.com/questions/34365271/hr-inside-container-with-display-flex-become-corrupted
+6. https://codepen.io/getonlineamit/pen/LCbop
+   Modernizr doesn't support dialog feature detection which would be the best solution
+   in order to avoid the two requests demanded for the polyfil
+   and I avoid doing browser sniffing
+-->
+
+
+
+
+</html>
