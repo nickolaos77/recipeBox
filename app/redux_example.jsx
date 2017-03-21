@@ -1,100 +1,169 @@
-var redux = require('redux');
+const redux = require('redux');
 
 console.log('Starting redux example');
 
-var recipes ={ 
-    recWinOpen: 'false',
-    recipes: [{
-    recipeName:'recipeName',
-    ingredients: [],
-    recipeIndex: 0    
-    }]
-};
-var reducer = (state = recipes, action)=>{
-    console.log(state);
+
+//C.R.U.D. Recuder and action generators
+//---------------------------------------
+var nextRecipeIndex = 1;
+
+const crudRecReducer = (state = [], action)=>{
+    
     switch (action.type){
-        case 'SHOW_ADD_REC_WIN':
-            return {
-            ...state,
-                recWinOpen: 'true'
-            };
-        case 'HIDE_ADD_REC_WIN':
-            return {
-            ...state,
-                recWinOpen: 'false'
-            };            
-        case 'ADD_REC':
-            {//seperate scope
-            let newRecipesArray = state.recipes.concat([{recipeName:action.recipeName, ingredients:action.ingredients}]);
-            return {
-            ...state,
-                recipes: newRecipesArray
-            };
+            
+        case 'ADD_RECIPE':
+            {//create a block of scope
+            let newState = state.concat([{recipeName : action.recipeName,
+                                                 ingredients: action.ingredients,
+                                                 recipeIndex: nextRecipeIndex++ }]);
+            return newState;
             }
-        case 'DEL_REC':
-            {//seperate scope
-            let newRecipesArray = [...state.recipes.slice(0,action.index),
-                                   ...state.recipes.slice(action.index + 1)]
-            return {
-            ...state,
-                recipes: newRecipesArray
-            };
+            
+        case 'EDIT_RECIPE':
+            {//create a block of scope
+            let newState =state.filter(function(recipe){
+                return recipe.recipeIndex !== action.recipeIndex ;
+            });
+            newState = newState.concat([{recipeName : action.recipeName,
+                                                 ingredients: action.ingredients,
+                                                 recipeIndex: action.recipeIndex }]);
+            return newState; 
+            }               
+        case 'DEL_RECIPE':
+            {//create a block of scope
+            let newState =state.filter(function(recipe){
+                return recipe.recipeIndex !== action.recipeIndex ;
+            })
+            return newState;
             }
             
         default:
             return state;
     };   
 };
-var store = redux.createStore(reducer);
 
-var currentState = store.getState();
+const addRecAG = (recipeName, ingredients) =>{
+    return {
+        type: 'ADD_RECIPE',
+        recipeName,
+        ingredients
+    }
+}
 
-console.log('currentState',currentState);
+const delRecAG = (recipeIndex) =>{
+    return {
+        type: 'DEL_RECIPE',
+        recipeIndex
+    }
+}
 
-var showAddRecWin = {
-    type:'SHOW_ADD_REC_WIN'
+const editRecAG = (recipeName, ingredients, recipeIndex) =>{
+    return {
+        type:'EDIT_RECIPE',
+        recipeName,
+        ingredients, 
+        recipeIndex
+    }
+}
+
+
+//Panel Recuder and action generators
+//---------------------------------------
+const panelReducer = (state=[], action) => {
+  switch (action.type){
+      case 'EXPAND_PANEL':
+          {//create a block of scope
+          let newState = state.concat({expanded:true, recipeIndex:action.recipeIndex});
+          return newState;
+          }
+      case 'CONTRACT_PANEL':
+          {//create a block of scope
+          let newState =state.filter(function(recipe){return recipe.recipeIndex !== action.recipeIndex})
+            return newState;
+          }
+      default:
+          return state;   
+}
 };
+const expandPanelAG = recipeIndex => {
+    return {
+        type : 'EXPAND_PANEL',
+        recipeIndex
+    }
+}
 
-var hideAddRecWin = {
-    type:'HIDE_ADD_REC_WIN'
-};
+const contractPanelAG = recipeIndex => {
+    return {
+        type : 'CONTRACT_PANEL',
+        recipeIndex
+    }
+}
+
+//Modal Recuder and action generators
+//---------------------------------------
 
 
-var addRec = {
-    type:'ADD_REC',
-    recipeName:'Lasagna',
-    ingredients:['makaronia', 'cheese']
-};
+const modalOpenReducer = (state='false',action)=>{
+switch (action.type){
+        case 'SHOW_MODAL':
+            return 'true';
+            
+        case 'HIDE_MODAL':
+            return 'false'; 
+        
+         default:
+            return state;
+}
+}
 
-var showRec = {
-    type: 'Show_Rec'
-};
+const showModalAG = () => {
+    return {
+        type : 'SHOW_MODAL',
+    }
+}
 
-var hideRec = {
-    type: 'Hide_Rec'
-};
+const hideModalAG = () => {
+    return {
+        type :'HIDE_MODAL',
+    }
+}
 
-var delRec = {
-    type:'DEL_REC',
-    index:0
-};
 
-var editRec = {
-    type:'EDIT_REC'
-};
+//Combine the reducers
+//---------------------------------------
 
-store.dispatch(showAddRecWin);
 
-console.log('Recipe window should open', store.getState());
+const reducer = redux.combineReducers({
+    modalOpen :  modalOpenReducer,
+    recipes   :  crudRecReducer,
+    panelOpen :  panelReducer
+})
+ 
 
-store.dispatch(hideAddRecWin);
+//redux.compose allow us to add middleware functions. Here I add a function to use the redux dev tools
+const store = redux.createStore(reducer, redux.compose( 
+    window.devToolsExtension ? window.devToolsExtension(): f=>f
+));
 
-console.log('Recipe window should hide', store.getState());
+//subscribe to changes
 
-store.dispatch(addRec);
+const unsubscribe = store.subscribe(
+    ()=>{
+        let state = store.getState();
+        console.log(state);
+    }
+);
 
-console.log('Recipe should be added', store.getState());
+// Create Actions
 
-store.dispatch(delRec);
+//Dispatch the actions
 
-console.log('Recipe should be deleted', store.getState());
+store.dispatch(expandPanelAG(1));
+store.dispatch(contractPanelAG(1));
+store.dispatch(expandPanelAG(2));
+store.dispatch(addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+store.dispatch(delRecAG(1));
+store.dispatch(addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+store.dispatch(editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'],2));
+store.dispatch(showModalAG());
+store.dispatch(hideModalAG());

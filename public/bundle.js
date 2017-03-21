@@ -22314,109 +22314,185 @@
 
 	'use strict';
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 	var redux = __webpack_require__(159);
 
 	console.log('Starting redux example');
 
-	var recipes = {
-	    recWinOpen: 'false',
-	    recipes: [{
-	        recipeName: 'recipeName',
-	        ingredients: [],
-	        recipeIndex: 0
-	    }]
-	};
-	var reducer = function reducer() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : recipes;
+	//C.R.U.D. Recuder and action generators
+	//---------------------------------------
+	var nextRecipeIndex = 1;
+
+	var crudRecReducer = function crudRecReducer() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
 
-	    console.log(state);
+
 	    switch (action.type) {
-	        case 'SHOW_ADD_REC_WIN':
-	            return _extends({}, state, {
-	                recWinOpen: 'true'
-	            });
-	        case 'HIDE_ADD_REC_WIN':
-	            return _extends({}, state, {
-	                recWinOpen: 'false'
-	            });
-	        case 'ADD_REC':
+
+	        case 'ADD_RECIPE':
 	            {
-	                //seperate scope
-	                var newRecipesArray = state.recipes.concat([{ recipeName: action.recipeName, ingredients: action.ingredients }]);
-	                return _extends({}, state, {
-	                    recipes: newRecipesArray
-	                });
+	                //create a block of scope
+	                var newState = state.concat([{ recipeName: action.recipeName,
+	                    ingredients: action.ingredients,
+	                    recipeIndex: nextRecipeIndex++ }]);
+	                return newState;
 	            }
-	        case 'DEL_REC':
+
+	        case 'EDIT_RECIPE':
 	            {
-	                //seperate scope
-	                var _newRecipesArray = [].concat(_toConsumableArray(state.recipes.slice(0, action.index)), _toConsumableArray(state.recipes.slice(action.index + 1)));
-	                return _extends({}, state, {
-	                    recipes: _newRecipesArray
+	                //create a block of scope
+	                var _newState = state.filter(function (recipe) {
+	                    return recipe.recipeIndex !== action.recipeIndex;
 	                });
+	                _newState = _newState.concat([{ recipeName: action.recipeName,
+	                    ingredients: action.ingredients,
+	                    recipeIndex: action.recipeIndex }]);
+	                return _newState;
+	            }
+	        case 'DEL_RECIPE':
+	            {
+	                //create a block of scope
+	                var _newState2 = state.filter(function (recipe) {
+	                    return recipe.recipeIndex !== action.recipeIndex;
+	                });
+	                return _newState2;
 	            }
 
 	        default:
 	            return state;
 	    };
 	};
-	var store = redux.createStore(reducer);
 
-	var currentState = store.getState();
-
-	console.log('currentState', currentState);
-
-	var showAddRecWin = {
-	    type: 'SHOW_ADD_REC_WIN'
+	var addRecAG = function addRecAG(recipeName, ingredients) {
+	    return {
+	        type: 'ADD_RECIPE',
+	        recipeName: recipeName,
+	        ingredients: ingredients
+	    };
 	};
 
-	var hideAddRecWin = {
-	    type: 'HIDE_ADD_REC_WIN'
+	var delRecAG = function delRecAG(recipeIndex) {
+	    return {
+	        type: 'DEL_RECIPE',
+	        recipeIndex: recipeIndex
+	    };
 	};
 
-	var addRec = {
-	    type: 'ADD_REC',
-	    recipeName: 'Lasagna',
-	    ingredients: ['makaronia', 'cheese']
+	var editRecAG = function editRecAG(recipeName, ingredients, recipeIndex) {
+	    return {
+	        type: 'EDIT_RECIPE',
+	        recipeName: recipeName,
+	        ingredients: ingredients,
+	        recipeIndex: recipeIndex
+	    };
 	};
 
-	var showRec = {
-	    type: 'Show_Rec'
+	//Panel Recuder and action generators
+	//---------------------------------------
+	var panelReducer = function panelReducer() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case 'EXPAND_PANEL':
+	            {
+	                //create a block of scope
+	                var newState = state.concat({ expanded: true, recipeIndex: action.recipeIndex });
+	                return newState;
+	            }
+	        case 'CONTRACT_PANEL':
+	            {
+	                //create a block of scope
+	                var _newState3 = state.filter(function (recipe) {
+	                    return recipe.recipeIndex !== action.recipeIndex;
+	                });
+	                return _newState3;
+	            }
+	        default:
+	            return state;
+	    }
+	};
+	var expandPanelAG = function expandPanelAG(recipeIndex) {
+	    return {
+	        type: 'EXPAND_PANEL',
+	        recipeIndex: recipeIndex
+	    };
 	};
 
-	var hideRec = {
-	    type: 'Hide_Rec'
+	var contractPanelAG = function contractPanelAG(recipeIndex) {
+	    return {
+	        type: 'CONTRACT_PANEL',
+	        recipeIndex: recipeIndex
+	    };
 	};
 
-	var delRec = {
-	    type: 'DEL_REC',
-	    index: 0
+	//Modal Recuder and action generators
+	//---------------------------------------
+
+
+	var modalOpenReducer = function modalOpenReducer() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'false';
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case 'SHOW_MODAL':
+	            return 'true';
+
+	        case 'HIDE_MODAL':
+	            return 'false';
+
+	        default:
+	            return state;
+	    }
 	};
 
-	var editRec = {
-	    type: 'EDIT_REC'
+	var showModalAG = function showModalAG() {
+	    return {
+	        type: 'SHOW_MODAL'
+	    };
 	};
 
-	store.dispatch(showAddRecWin);
+	var hideModalAG = function hideModalAG() {
+	    return {
+	        type: 'HIDE_MODAL'
+	    };
+	};
 
-	console.log('Recipe window should open', store.getState());
+	//Combine the reducers
+	//---------------------------------------
 
-	store.dispatch(hideAddRecWin);
 
-	console.log('Recipe window should hide', store.getState());
+	var reducer = redux.combineReducers({
+	    modalOpen: modalOpenReducer,
+	    recipes: crudRecReducer,
+	    panelOpen: panelReducer
+	});
 
-	store.dispatch(addRec);
+	//redux.compose allow us to add middleware functions. Here I add a function to use the redux dev tools
+	var store = redux.createStore(reducer, redux.compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
+	    return f;
+	}));
 
-	console.log('Recipe should be added', store.getState());
+	//subscribe to changes
 
-	store.dispatch(delRec);
+	var unsubscribe = store.subscribe(function () {
+	    var state = store.getState();
+	    console.log(state);
+	});
 
-	console.log('Recipe should be deleted', store.getState());
+	// Create Actions
+
+	//Dispatch the actions
+
+	store.dispatch(expandPanelAG(1));
+	store.dispatch(contractPanelAG(1));
+	store.dispatch(expandPanelAG(2));
+	store.dispatch(addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	store.dispatch(delRecAG(1));
+	store.dispatch(addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	store.dispatch(editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'], 2));
+	store.dispatch(showModalAG());
+	store.dispatch(hideModalAG());
 
 /***/ }
 /******/ ]);
