@@ -1,3 +1,6 @@
+var webpack = require('webpack');
+var path = require('path');
+
 module.exports = {
   entry: './app/app.jsx',
   output: {
@@ -7,6 +10,7 @@ module.exports = {
   resolve: {
     root: __dirname,
     alias: {
+        actions:'app/actions/actions.js'
     },
     extensions: ['', '.js', '.jsx']
   },

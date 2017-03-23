@@ -22318,11 +22318,147 @@
 
 	console.log('Starting redux example');
 
-	//C.R.U.D. Recuder and action generators
+	var actions = __webpack_require__(208);
+	var store = __webpack_require__(209).configure();
+
+	//Combine the reducers
 	//---------------------------------------
+
+
+	//subscribe to changes
+
+	var unsubscribe = store.subscribe(function () {
+	        var state = store.getState();
+	        console.log(state);
+	});
+
+	// Create Actions
+
+	//Dispatch the actions
+
+	store.dispatch(actions.expandPanelAG(1));
+	store.dispatch(actions.contractPanelAG(1));
+	store.dispatch(actions.expandPanelAG(2));
+	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	store.dispatch(actions.delRecAG(1));
+	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	store.dispatch(actions.editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'], 2));
+	store.dispatch(actions.showModalAG());
+	store.dispatch(actions.hideModalAG());
+
+/***/ },
+/* 208 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	//C.R.U.D. action generators
+	//---------------------------------------
+
+	var addRecAG = exports.addRecAG = function addRecAG(recipeName, ingredients) {
+	    return {
+	        type: 'ADD_RECIPE',
+	        recipeName: recipeName,
+	        ingredients: ingredients
+	    };
+	};
+
+	var delRecAG = exports.delRecAG = function delRecAG(recipeIndex) {
+	    return {
+	        type: 'DEL_RECIPE',
+	        recipeIndex: recipeIndex
+	    };
+	};
+
+	var editRecAG = exports.editRecAG = function editRecAG(recipeName, ingredients, recipeIndex) {
+	    return {
+	        type: 'EDIT_RECIPE',
+	        recipeName: recipeName,
+	        ingredients: ingredients,
+	        recipeIndex: recipeIndex
+	    };
+	};
+
+	//Panel action generators
+	//---------------------------------------
+
+	var expandPanelAG = exports.expandPanelAG = function expandPanelAG(recipeIndex) {
+	    return {
+	        type: 'EXPAND_PANEL',
+	        recipeIndex: recipeIndex
+	    };
+	};
+
+	var contractPanelAG = exports.contractPanelAG = function contractPanelAG(recipeIndex) {
+	    return {
+	        type: 'CONTRACT_PANEL',
+	        recipeIndex: recipeIndex
+	    };
+	};
+
+	//Modal action generators
+	//---------------------------------------
+
+	var showModalAG = exports.showModalAG = function showModalAG() {
+	    return {
+	        type: 'SHOW_MODAL'
+	    };
+	};
+
+	var hideModalAG = exports.hideModalAG = function hideModalAG() {
+	    return {
+	        type: 'HIDE_MODAL'
+	    };
+	};
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.configure = undefined;
+
+	var _reducers = __webpack_require__(210);
+
+	var redux = __webpack_require__(159);
+	var configure = exports.configure = function configure() {
+	    var reducer = redux.combineReducers({
+	        modalOpen: _reducers.modalOpenReducer,
+	        recipes: _reducers.crudRecReducer,
+	        panelOpen: _reducers.panelReducer
+	    });
+
+	    //redux.compose allow us to add middleware functions. Here I add a function to use the redux dev tools
+	    var store = redux.createStore(reducer, redux.compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
+	        return f;
+	    }));
+	    return store;
+	};
+
+/***/ },
+/* 210 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+
+	//C.R.U.D. Recuder
+	//----------------
+
 	var nextRecipeIndex = 1;
 
-	var crudRecReducer = function crudRecReducer() {
+	var crudRecReducer = exports.crudRecReducer = function crudRecReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
 
@@ -22363,33 +22499,10 @@
 	    };
 	};
 
-	var addRecAG = function addRecAG(recipeName, ingredients) {
-	    return {
-	        type: 'ADD_RECIPE',
-	        recipeName: recipeName,
-	        ingredients: ingredients
-	    };
-	};
+	//Panel Recuder 
+	//--------------
 
-	var delRecAG = function delRecAG(recipeIndex) {
-	    return {
-	        type: 'DEL_RECIPE',
-	        recipeIndex: recipeIndex
-	    };
-	};
-
-	var editRecAG = function editRecAG(recipeName, ingredients, recipeIndex) {
-	    return {
-	        type: 'EDIT_RECIPE',
-	        recipeName: recipeName,
-	        ingredients: ingredients,
-	        recipeIndex: recipeIndex
-	    };
-	};
-
-	//Panel Recuder and action generators
-	//---------------------------------------
-	var panelReducer = function panelReducer() {
+	var panelReducer = exports.panelReducer = function panelReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
 
@@ -22412,25 +22525,11 @@
 	            return state;
 	    }
 	};
-	var expandPanelAG = function expandPanelAG(recipeIndex) {
-	    return {
-	        type: 'EXPAND_PANEL',
-	        recipeIndex: recipeIndex
-	    };
-	};
 
-	var contractPanelAG = function contractPanelAG(recipeIndex) {
-	    return {
-	        type: 'CONTRACT_PANEL',
-	        recipeIndex: recipeIndex
-	    };
-	};
+	//Modal Recuder 
+	//-------------
 
-	//Modal Recuder and action generators
-	//---------------------------------------
-
-
-	var modalOpenReducer = function modalOpenReducer() {
+	var modalOpenReducer = exports.modalOpenReducer = function modalOpenReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'false';
 	    var action = arguments[1];
 
@@ -22445,54 +22544,6 @@
 	            return state;
 	    }
 	};
-
-	var showModalAG = function showModalAG() {
-	    return {
-	        type: 'SHOW_MODAL'
-	    };
-	};
-
-	var hideModalAG = function hideModalAG() {
-	    return {
-	        type: 'HIDE_MODAL'
-	    };
-	};
-
-	//Combine the reducers
-	//---------------------------------------
-
-
-	var reducer = redux.combineReducers({
-	    modalOpen: modalOpenReducer,
-	    recipes: crudRecReducer,
-	    panelOpen: panelReducer
-	});
-
-	//redux.compose allow us to add middleware functions. Here I add a function to use the redux dev tools
-	var store = redux.createStore(reducer, redux.compose(window.devToolsExtension ? window.devToolsExtension() : function (f) {
-	    return f;
-	}));
-
-	//subscribe to changes
-
-	var unsubscribe = store.subscribe(function () {
-	    var state = store.getState();
-	    console.log(state);
-	});
-
-	// Create Actions
-
-	//Dispatch the actions
-
-	store.dispatch(expandPanelAG(1));
-	store.dispatch(contractPanelAG(1));
-	store.dispatch(expandPanelAG(2));
-	store.dispatch(addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
-	store.dispatch(delRecAG(1));
-	store.dispatch(addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
-	store.dispatch(editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'], 2));
-	store.dispatch(showModalAG());
-	store.dispatch(hideModalAG());
 
 /***/ }
 /******/ ]);
