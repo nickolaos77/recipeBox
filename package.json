@@ -4,7 +4,7 @@
   "description": "Simple react app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register --require babel-polyfill ./app/tests/**/*.js",
+    "test": "mocha --compilers js:babel-register --require babel-polyfill ./app/tests/**/*.jsx",
     "start": "node server.js"
   },
   "author": "Nick Papasavvas",

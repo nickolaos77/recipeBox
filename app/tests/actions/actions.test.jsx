@@ -1,9 +1,11 @@
 var expect  = require('chai').expect;
 
-var actions = require('../../actions/actions.js');
+var actions = require('../../actions/actions.jsx');
+//using the alias at webpack.config.js
+//var actions = require('actions.jsx');
 
-describe('util tests', function(){
-    it('should pass this canary test', function(){
+describe('Testing the actions component', function(){
+    it('should pass this canary test in actions', function(){
         expect(true).to.eql(true);
     });
     

@@ -60,15 +60,38 @@
 
 	var _reactRedux2 = _interopRequireDefault(_reactRedux);
 
+	var _Recipes_And_Dialog_Cont = __webpack_require__(207);
+
+	var _Recipes_And_Dialog_Cont2 = _interopRequireDefault(_Recipes_And_Dialog_Cont);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_reactDom2.default.render(_react2.default.createElement(
-	  'h1',
-	  null,
-	  'Boilerplate app!'
-	), document.getElementById('app'));
+	var redux = __webpack_require__(159);
+	var actions = __webpack_require__(212);
+	var store = __webpack_require__(213).configure();
 
-	__webpack_require__(207);
+	_reactDom2.default.render(_react2.default.createElement(_Recipes_And_Dialog_Cont2.default, null), document.getElementById('app'));
+
+	//subscribe to changes
+
+	var unsubscribe = store.subscribe(function () {
+	  var state = store.getState();
+	  console.log(state);
+	});
+
+	// Create Actions
+
+	//Dispatch the actions
+
+	store.dispatch(actions.expandPanelAG(1));
+	store.dispatch(actions.contractPanelAG(1));
+	store.dispatch(actions.expandPanelAG(2));
+	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	store.dispatch(actions.delRecAG(1));
+	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	store.dispatch(actions.editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'], 2));
+	store.dispatch(actions.showModalAG());
+	store.dispatch(actions.hideModalAG());
 
 /***/ },
 /* 1 */
@@ -22314,40 +22337,385 @@
 
 	'use strict';
 
-	var redux = __webpack_require__(159);
-
-	console.log('Starting redux example');
-
-	var actions = __webpack_require__(208);
-	var store = __webpack_require__(209).configure();
-
-	//Combine the reducers
-	//---------------------------------------
-
-
-	//subscribe to changes
-
-	var unsubscribe = store.subscribe(function () {
-	        var state = store.getState();
-	        console.log(state);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
 	});
 
-	// Create Actions
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	//Dispatch the actions
+	var _react = __webpack_require__(1);
 
-	store.dispatch(actions.expandPanelAG(1));
-	store.dispatch(actions.contractPanelAG(1));
-	store.dispatch(actions.expandPanelAG(2));
-	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
-	store.dispatch(actions.delRecAG(1));
-	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
-	store.dispatch(actions.editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'], 2));
-	store.dispatch(actions.showModalAG());
-	store.dispatch(actions.hideModalAG());
+	var _react2 = _interopRequireDefault(_react);
+
+	var _RecipeApp = __webpack_require__(208);
+
+	var _RecipeApp2 = _interopRequireDefault(_RecipeApp);
+
+	var _Dialog = __webpack_require__(211);
+
+	var _Dialog2 = _interopRequireDefault(_Dialog);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Recipes_And_Dialog_Cont = function (_React$Component) {
+	  _inherits(Recipes_And_Dialog_Cont, _React$Component);
+
+	  function Recipes_And_Dialog_Cont(props) {
+	    _classCallCheck(this, Recipes_And_Dialog_Cont);
+
+	    return _possibleConstructorReturn(this, (Recipes_And_Dialog_Cont.__proto__ || Object.getPrototypeOf(Recipes_And_Dialog_Cont)).call(this, props));
+	  }
+
+	  _createClass(Recipes_And_Dialog_Cont, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { id: 'Recipes_and_Dialog_Cont' },
+	        _react2.default.createElement(_RecipeApp2.default, null),
+	        _react2.default.createElement(_Dialog2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return Recipes_And_Dialog_Cont;
+	}(_react2.default.Component);
+
+	exports.default = Recipes_And_Dialog_Cont;
 
 /***/ },
 /* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _RecipeList = __webpack_require__(209);
+
+	var _RecipeList2 = _interopRequireDefault(_RecipeList);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RecipeApp = function (_React$Component) {
+	    _inherits(RecipeApp, _React$Component);
+
+	    function RecipeApp(props) {
+	        _classCallCheck(this, RecipeApp);
+
+	        var _this = _possibleConstructorReturn(this, (RecipeApp.__proto__ || Object.getPrototypeOf(RecipeApp)).call(this, props));
+
+	        _this.state = {
+	            recipes: [{
+	                id: 1,
+	                name: "Makaronia me kima"
+	            }, {
+	                id: 2,
+	                name: "Spanakoryzo"
+	            }]
+	        };
+	        return _this;
+	    }
+
+	    _createClass(RecipeApp, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'container' },
+	                _react2.default.createElement(_RecipeList2.default, null),
+	                _react2.default.createElement(
+	                    'button',
+	                    null,
+	                    'Add Recipe'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return RecipeApp;
+	}(_react2.default.Component);
+
+	;
+
+	exports.default = RecipeApp;
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Recipe = __webpack_require__(210);
+
+	var _Recipe2 = _interopRequireDefault(_Recipe);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RecipeList = function RecipeList(props) {
+	    //    const recipes = props.recipes.map( (obj,index)=>{
+	    //        return <Recipe key={obj.id} recipe={obj}/>
+	    //    } );
+
+	    return _react2.default.createElement(
+	        'div',
+	        { id: 'recipeContainer' },
+	        _react2.default.createElement(_Recipe2.default, null),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'recipe' },
+	            _react2.default.createElement(
+	                'h4',
+	                null,
+	                'Spaghetti'
+	            )
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'recipe ' },
+	            _react2.default.createElement(
+	                'h4',
+	                null,
+	                'Onion Pie'
+	            )
+	        )
+	    );
+	};
+
+	exports.default = RecipeList;
+
+	//const RecipeList = (props) => {
+	//    return (
+	//        <ul>
+	//            {props.recipes.map(function(elem, index){
+	//                return (<li key={index}>Recipe {elem.id}  {elem.name}</li>);
+	//            })}
+	//        </ul>
+	//    );
+	//}
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Recipe = function Recipe(props) {
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'recipe' },
+	        _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Pumpkin Pie'
+	        ),
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'ingredients' },
+	            _react2.default.createElement(
+	                'h4',
+	                null,
+	                'Ingredients'
+	            ),
+	            _react2.default.createElement('hr', null),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'ingredientsContainer' },
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Ingredient 1'
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Ingredient 2'
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Ingredient 3'
+	                ),
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Ingredient 4'
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'div',
+	                { className: 'buttonContainer' },
+	                _react2.default.createElement(
+	                    'button',
+	                    { className: 'danger' },
+	                    'Delete'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { className: 'default', id: 'show' },
+	                    'Edit'
+	                )
+	            )
+	        )
+	    );
+	};
+
+	exports.default = Recipe;
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Dialog = function (_React$Component) {
+	    _inherits(Dialog, _React$Component);
+
+	    function Dialog(props) {
+	        _classCallCheck(this, Dialog);
+
+	        return _possibleConstructorReturn(this, (Dialog.__proto__ || Object.getPrototypeOf(Dialog)).call(this, props));
+	    }
+
+	    _createClass(Dialog, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            (function () {
+	                var node = document.querySelector(".container");
+	                var dialog = document.getElementById('window');
+	                dialogPolyfill.registerDialog(dialog);
+	                document.getElementById('show').onclick = function () {
+	                    dialog.showModal();
+	                    console.log('B');
+	                    //node.className += " opaque"; 
+	                };
+	                document.getElementById('exit').onclick = function () {
+	                    dialog.close();
+	                };
+	            })();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'dialog',
+	                { id: 'window' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'flexContWind' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { id: 'titleFlexContainer' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            'Edit Recipe!'
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            { id: 'x' },
+	                            'x'
+	                        )
+	                    ),
+	                    _react2.default.createElement('hr', null),
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'Recipe'
+	                    ),
+	                    _react2.default.createElement('input', { value: 'Spaghetti' }),
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'Ingredients'
+	                    ),
+	                    _react2.default.createElement(
+	                        'textarea',
+	                        { rows: '4', cols: '40' },
+	                        'Comma seperaged ingredients'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'windowButtonContainer' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { id: 'editRecipe' },
+	                            'Edit Recipe'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { id: 'close', className: 'default' },
+	                            'Close'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Dialog;
+	}(_react2.default.Component);
+
+	exports.default = Dialog;
+
+/***/ },
+/* 212 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22415,7 +22783,7 @@
 	};
 
 /***/ },
-/* 209 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22425,7 +22793,7 @@
 	});
 	exports.configure = undefined;
 
-	var _reducers = __webpack_require__(210);
+	var _reducers = __webpack_require__(214);
 
 	var redux = __webpack_require__(159);
 	var configure = exports.configure = function configure() {
@@ -22443,7 +22811,7 @@
 	};
 
 /***/ },
-/* 210 */
+/* 214 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22527,7 +22895,7 @@
 	};
 
 	//Modal Recuder 
-	//-------------
+	//-------------//
 
 	var modalOpenReducer = exports.modalOpenReducer = function modalOpenReducer() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'false';

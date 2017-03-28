@@ -3,7 +3,7 @@ var expect   = require('chai').expect;
 var df       = require('deep-freeze-strict');
 var reducers = require('../../reducers/reducers.jsx');
 
-describe('util tests', function(){
+describe('testing the reducers components', function(){
     it('should pass this canary test', function(){
         expect(true).to.eql(true);
     });

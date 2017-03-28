@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-    <title>React Recipe Box</title>
-    <link href='./dialog-polyfill.css' type="text/css" rel='stylesheet' />
-    <style>
         html {
             height: 100vh;
         }
@@ -15,6 +9,11 @@
             background: green;
             display: flex;
             flex-direction: column;
+        }
+        
+        #recipeAndDialogCont{
+          height:100%;
+          width :100%; 
         }
         
         .container {
@@ -195,116 +194,3 @@
         textarea{
             text-align: left;
         }
-        
-    </style>
-</head>
-
-<body>
-    <div class='container'>
-        <div id='recipeContainer'>
-            <div class='recipe'>
-                <h4>Pumpkin Pie</h4>
-                <div class='ingredients'>
-                    <h4>Ingredients</h4>
-                    <hr/>
-                    <div class='ingredientsContainer'>
-                        <p>Ingredient 1</p>
-                        <p>Ingredient 2</p>
-                        <p>Ingredient 3</p>
-                        <p>Ingredient 4</p>
-                    </div>
-                    <div class='buttonContainer'>
-                        <button class="danger">
-                            Delete
-                        </button>
-                        <button class="default" id="show">
-                            Edit
-                        </button>
-
-                    </div>
-                </div>
-            </div>
-            <div class='recipe'>
-                <h4>Spaghetti</h4>
-            </div>
-            <div class='recipe '>
-                <h4>Onion Pie</h4>
-            </div>
-        </div>
-        <button>Add Recipe</button>
-    </div>
-
-    <dialog id="window">
-        <div class='flexContWind'>
-            <div id='titleFlexContainer'>
-              <h3 >Edit Recipe!</h3>
-              <span id='x'>x</span>   
-            </div>    
-            <hr/>
-            <h4>Recipe</h4>
-            <input value='Spaghetti'>
-            <h4>Ingredients</h4>
-            <textarea rows="4" cols="40">Comma seperaged ingredients</textarea>
-            <div class='windowButtonContainer'>
-           <button id="editRecipe">Edit Recipe</button>  
-           <button id="close" class='default' style='flex:none; margin:20px 0;'>Close</button>
-            </div>    
-        </div>
-    </dialog>
-
-    <!-- Form
- <dialog id="window">
-  <form method="dialog">
-    <p>Do you agree with terms of use?</p>
-    <textarea class="form-control" disabled>Lorem ipsum dolor sit amet,....</textarea>
-    <button type="submit" value="yes">Yes</button>
-    <button type="submit" value="no" autofocus>No</button>
-  </form>
-</dialog>
--->
-
-
-
-
-    <script src="./dialog-polyfill.js"></script>
-    <script>
-        (function () {
-            var node = document.querySelector(".container");
-            var dialog = document.getElementById('window');
-            dialogPolyfill.registerDialog(dialog);
-            document.getElementById('show').onclick = function () {
-                dialog.showModal();
-                console.log('B');
-                //node.className += " opaque"; 
-            };
-
-            document.getElementById('exit').onclick = function () {
-                dialog.close();
-            };
-
-
-
-        })();
-    </script>
-</body>
-<!--
-
---------------------------Links -----------------------------------
-1. https://demo.agektmr.com/dialog/
-2. https://github.com/GoogleChrome/dialog-polyfill 
-3. https://developers.google.com/web/updates/2013/09/dialog-element-Modals-made-easy
-4. http://www.hongkiat.com/blog/html5-dialog-window/
-5. http://stackoverflow.com/questions/34365271/hr-inside-container-with-display-flex-become-corrupted
-6. https://codepen.io/getonlineamit/pen/LCbop
-7. http://www.joostrap.com/blog/bootstrap-css-and-javascript-bloat-do-we-need-it-let-s-reduce-it
-8. http://getbootstrap.com/customize/
-   Modernizr doesn't support dialog feature detection which would be the best solution
-   in order to avoid the two requests demanded for the polyfil
-   and I avoid doing browser sniffing
-9. In this project I must also add testing
--->
-
-
-
-
-</html>

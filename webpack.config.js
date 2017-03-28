@@ -9,8 +9,12 @@ module.exports = {
   },
   resolve: {
     root: __dirname,
+    modulesDirectories:[
+        'node_modules',
+        './app/components'
+    ],  
     alias: {
-        actions:'app/actions/actions.js'
+        actions:'app/actions/actions.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },

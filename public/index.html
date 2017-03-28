@@ -3,12 +3,33 @@
 
 <head>
   <meta charset="UTF-8"/>
+  <title>React Recipe Box</title>    
+  <link rel="stylesheet" type="text/css" href="./main.css">
+  <link href='./dialog-polyfill.css' type="text/css" rel='stylesheet' />
+  
 </head>
 
 <body>
-  <div id="app"></div>
-
-  <script src="bundle.js"></script>
+<!--    RecipeApp-->
+<div id='app'> 
+</div> <!-- app -->    
+    <script src="./dialog-polyfill.js"></script>
+    <script src="bundle.js"></script>
 </body>
+<!--
 
+--------------------------Links -----------------------------------
+1. https://demo.agektmr.com/dialog/
+2. https://github.com/GoogleChrome/dialog-polyfill 
+3. https://developers.google.com/web/updates/2013/09/dialog-element-Modals-made-easy
+4. http://www.hongkiat.com/blog/html5-dialog-window/
+5. http://stackoverflow.com/questions/34365271/hr-inside-container-with-display-flex-become-corrupted
+6. https://codepen.io/getonlineamit/pen/LCbop
+7. http://www.joostrap.com/blog/bootstrap-css-and-javascript-bloat-do-we-need-it-let-s-reduce-it
+8. http://getbootstrap.com/customize/
+   Modernizr doesn't support dialog feature detection which would be the best solution
+   in order to avoid the two requests demanded for the polyfil
+   and I avoid doing browser sniffing
+9. In this project I must also add testing
+-->
 </html>
