@@ -1,33 +1,42 @@
 import React  from 'react' ;
 import Recipe from './Recipe.jsx';
+import { connect } from 'react-redux';
+import Dialog2     from './Dialog2.jsx';
 
-const RecipeList = (props)=>{
-//    const recipes = props.recipes.map( (obj,index)=>{
-//        return <Recipe key={obj.id} recipe={obj}/>
-//    } );
-    
+
+const RecipeList = (props)=>{ 
+  let recipes = props.recipes.map( (recipe, index)=>{
+    console.log('The recipe name is: ', recipe.recipeName);
+    return (<Recipe key={recipe.recipeIndex} name = {recipe.recipeName} ingredients={recipe.ingredients}
+              recipeIndex = {recipe.recipeIndex} />)
+  } ) 
+  
     return (
+      <div>
         <div id='recipeContainer'>
-          <Recipe/>
-          <div className='recipe'>
-              <h4>Spaghetti</h4>
-          </div>
-          <div className='recipe '>
-              <h4>Onion Pie</h4>
-          </div>          
-        {/*  {recipes} */}
+          {recipes}         
         </div>
+        <Dialog2 ingredients = {[]} name = ""  callerButton="Add"/>          
+        <button onClick={ ()=>{
+                var dialog2 = document.getElementById('window2');
+                dialogPolyfill.registerDialog(dialog2);
+                dialog2.showModal();
+                document.getElementById('closeButton2').onclick = function () {
+                dialog2.close();
+                        };
+                document.getElementById('closeX2').onclick = function () {
+                dialog2.close();
+                       }; 
+            
+          } }>Add Recipe</button> 
+      </div>  
     );
 } 
 
-export default RecipeList;
-
-//const RecipeList = (props) => {
-//    return (
-//        <ul>
-//            {props.recipes.map(function(elem, index){
-//                return (<li key={index}>Recipe {elem.id}  {elem.name}</li>);
-//            })}
-//        </ul>
-//    );
-//}
+module.exports = connect(
+  (state)=>{
+    return{
+      recipes:state.recipes //now recipes can be accesible inside the RecipeList component as props.recipes 
+    };
+  }
+)(RecipeList);

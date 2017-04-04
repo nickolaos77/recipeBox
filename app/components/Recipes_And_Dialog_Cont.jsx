@@ -1,6 +1,6 @@
 import React      from 'react' ;
 import RecipeApp  from './RecipeApp.jsx';
-import Dialog     from './Dialog.jsx';
+//import Dialog     from './Dialog.jsx';
 
 class Recipes_And_Dialog_Cont extends React.Component{
   constructor(props){
@@ -10,7 +10,7 @@ class Recipes_And_Dialog_Cont extends React.Component{
     return(
       <div id='Recipes_and_Dialog_Cont'>
         <RecipeApp/>
-        <Dialog/>
+        {/* <Dialog/> */}
       </div>    
     );
   }
