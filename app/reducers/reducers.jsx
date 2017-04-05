@@ -16,7 +16,13 @@ export const crudRecReducer = (state = [], action)=>{
                                                  recipeIndex: nextRecipeIndex++ }]);
             return newState;
             }
-            
+        
+        case 'ADD_RECIPES':{
+          return [
+            ...state,
+            action.recipes
+          ];
+        }    
         case 'EDIT_RECIPE':
             {//create a block of scope
             let newState =state.filter(function(recipe){

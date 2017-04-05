@@ -26,7 +26,13 @@ class Dialog extends React.Component{
 			ingredients: event.target.value,
    textAreaValue : event.target.value
 		});
-	}  
+	}
+  
+  initializeFormFields = ()=>{
+    var dialog = document.getElementById('window'); 
+    dialog.close(); this.setState({inputValue:"",textAreaValue:""});
+    }
+  
   
   ingredientsString = this.props.ingredients.join(",");
   
@@ -37,22 +43,18 @@ class Dialog extends React.Component{
         <div className='flexContWind'>
             <div id='titleFlexContainer'>
               <h3 >Edit Recipe!</h3>
-              <span id='closeX'>x</span>   
+              <span id='closeX' onClick={this.initializeFormFields}>x</span>   
             </div>    
             <hr/>
             <h4>Recipe</h4>
             <input placeholder={this.props.name} onChange={this.handleInput} value={this.state.inputValue}/>
             <h4>Ingredients</h4>
             <textarea rows="4" cols="40" onChange={this.handleTextArea} placeholder={this.props.ingredients.join(',')} value={this.state.textAreaValue}></textarea>
-            
-            
             <div className='windowButtonContainer'>
             {/*dispatch is available inside of props because I connected the Recipe component */}
            <button id={"editRecipe"+this.props.recipeIndex}  onClick ={ ()=>{
-                  
-                  var dialog = document.getElementById('window');
-                  dialogPolyfill.registerDialog(dialog);
-                  dialog.close();
+                  {/* how to call a nested function */}
+                  this.initializeFormFields()
                   if (this.state.recipeName){
                   this.props.dispatch(actions.editRecAG( this.state.recipeName, this.state.ingredients.split(',') , this.props.recipeIndex  ))
                 
@@ -60,10 +62,9 @@ class Dialog extends React.Component{
                   else {
                     this.props.dispatch(actions.editRecAG( this.props.name, this.state.ingredients.split(',') , this.props.recipeIndex  ))
                   }
-                  this.setState({inputValue:"",textAreaValue:""})
+                  
                                      }}>Edit Recipe</button>  
-           <button id="closeButton" className='default' onClick={ ()=>{
-                  this.setState({inputValue:"",textAreaValue:""})}} >Close</button>
+           <button id="closeButton" className='default' onClick={this.initializeFormFields} >Close</button>
             </div>    
         </div>
     </dialog>    

@@ -22467,12 +22467,6 @@
 	          var dialog2 = document.getElementById('window2');
 	          dialogPolyfill.registerDialog(dialog2);
 	          dialog2.showModal();
-	          document.getElementById('closeButton2').onclick = function () {
-	            dialog2.close();
-	          };
-	          document.getElementById('closeX2').onclick = function () {
-	            dialog2.close();
-	          };
 	        } },
 	      'Add Recipe'
 	    )
@@ -22569,12 +22563,6 @@
 	                  var dialog = document.getElementById('window');
 	                  dialogPolyfill.registerDialog(dialog);
 	                  dialog.showModal();
-	                  document.getElementById('closeButton').onclick = function () {
-	                    dialog.close();
-	                  };
-	                  document.getElementById('closeX').onclick = function () {
-	                    dialog.close();
-	                  };
 	                } },
 	              'Edit'
 	            )
@@ -22685,6 +22673,11 @@
 	      });
 	    };
 
+	    _this.initializeFormFields = function () {
+	      var dialog = document.getElementById('window');
+	      dialog.close();_this.setState({ inputValue: "", textAreaValue: "" });
+	    };
+
 	    _this.ingredientsString = _this.props.ingredients.join(",");
 
 
@@ -22719,7 +22712,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'span',
-	              { id: 'closeX' },
+	              { id: 'closeX', onClick: this.initializeFormFields },
 	              'x'
 	            )
 	          ),
@@ -22742,24 +22735,19 @@
 	            _react2.default.createElement(
 	              'button',
 	              { id: "editRecipe" + this.props.recipeIndex, onClick: function onClick() {
-
-	                  var dialog = document.getElementById('window');
-	                  dialogPolyfill.registerDialog(dialog);
-	                  dialog.close();
+	                  {/* how to call a nested function */}
+	                  _this2.initializeFormFields();
 	                  if (_this2.state.recipeName) {
 	                    _this2.props.dispatch(actions.editRecAG(_this2.state.recipeName, _this2.state.ingredients.split(','), _this2.props.recipeIndex));
 	                  } else {
 	                    _this2.props.dispatch(actions.editRecAG(_this2.props.name, _this2.state.ingredients.split(','), _this2.props.recipeIndex));
 	                  }
-	                  _this2.setState({ inputValue: "", textAreaValue: "" });
 	                } },
 	              'Edit Recipe'
 	            ),
 	            _react2.default.createElement(
 	              'button',
-	              { id: 'closeButton', className: 'default', onClick: function onClick() {
-	                  _this2.setState({ inputValue: "", textAreaValue: "" });
-	                } },
+	              { id: 'closeButton', className: 'default', onClick: this.initializeFormFields },
 	              'Close'
 	            )
 	          )
@@ -22791,6 +22779,13 @@
 	        type: 'ADD_RECIPE',
 	        recipeName: recipeName,
 	        ingredients: ingredients
+	    };
+	};
+
+	var addRecipesAG = exports.addRecipesAG = function addRecipesAG(recipes) {
+	    return {
+	        type: 'ADD_RECIPES',
+	        recipes: recipes
 	    };
 	};
 
@@ -22876,14 +22871,22 @@
 
 	    _this.handleInput = function (event) {
 	      _this.setState({
-	        recipeName: event.target.value
+	        recipeName: event.target.value,
+	        inputValue: event.target.value
 	      });
 	    };
 
 	    _this.handleTextArea = function (event) {
 	      _this.setState({
-	        ingredients: event.target.value
+	        ingredients: event.target.value,
+	        textAreaValue: event.target.value
 	      });
+	    };
+
+	    _this.initializeFormFields = function () {
+	      var dialog2 = document.getElementById('window2');
+	      dialog2.close();
+	      _this.setState({ inputValue: "", textAreaValue: "" });
 	    };
 
 	    _this.ingredientsString = _this.props.ingredients.join(",");
@@ -22891,8 +22894,11 @@
 
 	    _this.state = {
 	      recipeName: 'Add a recipe',
-	      ingredients: 'Add a comma (,) seperated list of ingredients'
+	      ingredients: 'Add a comma (,) seperated list of ingredients',
+	      textAreaValue: '',
+	      inputValue: ''
 	    };
+	    //this._initializeFormFields = () => this.initializeFormFields();
 
 	    return _this;
 	  }
@@ -22918,7 +22924,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'span',
-	              { id: 'closeX2' },
+	              { id: 'closeX2', onClick: this.initializeFormFields },
 	              'x'
 	            )
 	          ),
@@ -22928,40 +22934,31 @@
 	            null,
 	            'Recipe'
 	          ),
-	          _react2.default.createElement('input', { placeholder: this.state.recipeName, onChange: this.handleInput }),
+	          _react2.default.createElement('input', { placeholder: 'Add a recipe', onChange: this.handleInput, value: this.state.inputValue }),
 	          _react2.default.createElement(
 	            'h4',
 	            null,
 	            'Ingredients'
 	          ),
-	          _react2.default.createElement('textarea', { rows: '4', cols: '40', placeholder: this.state.ingredients, onChange: this.handleTextArea }),
+	          _react2.default.createElement('textarea', { rows: '4', cols: '40', placeholder: 'Add a comma (,) seperated list of ingredients', onChange: this.handleTextArea, value: this.state.textAreaValue }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'windowButtonContainer' },
 	            _react2.default.createElement(
 	              'button',
 	              { id: 'addRecipe', onClick: function onClick() {
-	                  var dialog2 = document.getElementById('window2');
-	                  dialogPolyfill.registerDialog(dialog2);
-	                  dialog2.close();
+	                  {/* how to call a nested function */}
+	                  _this2.initializeFormFields();
+	                  {/* how to call a nested function */}
 	                  _this2.props.dispatch(actions.addRecAG(_this2.state.recipeName, _this2.state.ingredients.split(','), _this2.props.recipeIndex));
-	                  _this2.setState({
-	                    recipeName: 'Add a recipe',
-	                    ingredients: 'Add a comma (,) seperated list of ingredients'
-	                  });
-	                  console.log("this is the new state");
-	                  console.log(_this2.state.ingredients);
 	                } },
 	              'Add Recipe'
 	            ),
 	            _react2.default.createElement(
 	              'button',
 	              { id: 'closeButton2', className: 'default', onClick: function onClick() {
-	                  document.getElementById('closeButton2').onclick = function () {
-	                    var dialog2 = document.getElementById('window2');
-	                    dialogPolyfill.registerDialog(dialog2);
-	                    dialog2.close();
-	                  };
+	                  {/* how to call a nested function */}
+	                  _this2.initializeFormFields();
 	                } },
 	              'Close'
 	            )
@@ -23014,6 +23011,7 @@
 	    value: true
 	});
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	//C.R.U.D. Recuder
 	//----------------
@@ -23036,6 +23034,10 @@
 	                return newState;
 	            }
 
+	        case 'ADD_RECIPES':
+	            {
+	                return [].concat(_toConsumableArray(state), [action.recipes]);
+	            }
 	        case 'EDIT_RECIPE':
 	            {
 	                //create a block of scope

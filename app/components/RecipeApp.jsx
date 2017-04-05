@@ -1,5 +1,7 @@
 import React      from 'react' ;
-import RecipeList from './RecipeList';
+
+import RecipeList from './RecipeList.jsx';
+     
 
 const RecipeApp = () => {
       return(

@@ -9,6 +9,14 @@ export const addRecAG = (recipeName, ingredients) =>{
     }
 }
 
+export const addRecipesAG = (recipes)=>{
+  return {
+    type:'ADD_RECIPES',
+    recipes
+  }
+}
+
+
 export const delRecAG = (recipeIndex) =>{
     return {
         type: 'DEL_RECIPE',

@@ -21,13 +21,6 @@ const RecipeList = (props)=>{
                 var dialog2 = document.getElementById('window2');
                 dialogPolyfill.registerDialog(dialog2);
                 dialog2.showModal();
-                document.getElementById('closeButton2').onclick = function () {
-                dialog2.close();
-                        };
-                document.getElementById('closeX2').onclick = function () {
-                dialog2.close();
-                       }; 
-            
           } }>Add Recipe</button> 
       </div>  
     );

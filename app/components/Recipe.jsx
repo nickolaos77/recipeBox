@@ -34,13 +34,7 @@ const Recipe = (props) => {
                         document.getElementById('window').className =""; 
                         var dialog = document.getElementById('window');
                         dialogPolyfill.registerDialog(dialog);
-                                     dialog.showModal();
-                        document.getElementById('closeButton').onclick = function () {
-                        dialog.close();
-                        };
-                        document.getElementById('closeX').onclick = function () {
-                        dialog.close();
-                        }; 
+                                     dialog.showModal(); 
                       
                       } }>
                           Edit

@@ -8,24 +8,34 @@ class Dialog2 extends React.Component{
    
    this.state = {
 			recipeName: 'Add a recipe',
-   ingredients:'Add a comma (,) seperated list of ingredients'   
+   ingredients:'Add a comma (,) seperated list of ingredients',
+   textAreaValue : '',
+   inputValue: ''   
 		  };
+   //this._initializeFormFields = () => this.initializeFormFields();
     
   }
   handleInput = (event) => {
 		this.setState({
-			recipeName: event.target.value
+			recipeName: event.target.value,
+   inputValue:event.target.value  
 		});
 	}
   
   handleTextArea = (event) => {
 		this.setState({
-			ingredients: event.target.value
+			ingredients: event.target.value,
+    textAreaValue : event.target.value
 		});
-	
-
-}  
+}
+  initializeFormFields = ()=>{
+    var dialog2 = document.getElementById('window2'); 
+    dialog2.close();
+    this.setState({inputValue:"",textAreaValue:""});
+    } 
   
+  
+
   ingredientsString = this.props.ingredients.join(",");
   
   render(){
@@ -35,33 +45,24 @@ class Dialog2 extends React.Component{
         <div className='flexContWind'>
             <div id='titleFlexContainer'>
               <h3 >Add Recipe!</h3>
-              <span id='closeX2'>x</span>   
+              <span id='closeX2' onClick={this.initializeFormFields}>x</span>   
             </div>    
             <hr/>
             <h4>Recipe</h4>
-            <input placeholder={this.state.recipeName} onChange={this.handleInput} />
+            <input placeholder='Add a recipe' onChange={this.handleInput} value={this.state.inputValue} />
             <h4>Ingredients</h4>
-            <textarea rows="4" cols="40" placeholder={this.state.ingredients} onChange={this.handleTextArea}></textarea>
+            <textarea rows="4" cols="40" placeholder='Add a comma (,) seperated list of ingredients' onChange={this.handleTextArea} value={this.state.textAreaValue} ></textarea>
             <div className='windowButtonContainer'>
             {/*dispatch is available inside of props because I connected the Recipe component */}
-           <button id="addRecipe" onClick ={ ()=>{
-                  var dialog2 = document.getElementById('window2');
-                  dialogPolyfill.registerDialog(dialog2);  
-                  dialog2.close();
-                  this.props.dispatch(actions.addRecAG( this.state.recipeName, this.state.ingredients.split(',') , this.props.recipeIndex  )) 
-                  this.setState({
-			                     recipeName: 'Add a recipe',
-                        ingredients:'Add a comma (,) seperated list of ingredients'   
-		                      });  
-                  console.log("this is the new state");
-                  console.log(this.state.ingredients);
-                }}>Add Recipe</button>  
+           <button id="addRecipe" onClick ={  ()=>{
+                  {/* how to call a nested function */}
+                  this.initializeFormFields()
+                  {/* how to call a nested function */}
+                  this.props.dispatch(actions.addRecAG( this.state.recipeName, this.state.ingredients.split(',') , this.props.recipeIndex  ))
+                  }}>Add Recipe</button>  
            <button id="closeButton2" className='default' onClick = { ()=>{
-                document.getElementById('closeButton2').onclick = function () {
-                var dialog2 = document.getElementById('window2');
-                dialogPolyfill.registerDialog(dialog2);  
-                dialog2.close();
-                        };
+                  {/* how to call a nested function */}
+                  this.initializeFormFields()     
                 }}>Close</button>
                 
             </div>    
