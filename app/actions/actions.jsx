@@ -10,6 +10,7 @@ export const addRecAG = (recipeName, ingredients) =>{
 }
 
 export const addRecipesAG = (recipes)=>{
+  console.log("Action generator", recipes)
   return {
     type:'ADD_RECIPES',
     recipes

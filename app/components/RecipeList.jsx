@@ -5,9 +5,10 @@ import Dialog2     from './Dialog2.jsx';
 
 
 const RecipeList = (props)=>{ 
+  console.log("recipes",props.recipes);
   let recipes = props.recipes.map( (recipe, index)=>{
-    console.log('The recipe name is: ', recipe.recipeName);
-    return (<Recipe key={recipe.recipeIndex} name = {recipe.recipeName} ingredients={recipe.ingredients}
+    console.log('The recipe is: ', recipe);
+    return (<Recipe key={index} name = {recipe.recipeName} ingredients={recipe.ingredients}
               recipeIndex = {recipe.recipeIndex} />)
   } ) 
   

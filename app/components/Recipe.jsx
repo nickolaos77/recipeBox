@@ -4,14 +4,16 @@ import Dialog     from './Dialog.jsx';
 const actions = require('../actions/actions.jsx');
 
 const Recipe = (props) => {
+  console.log("passing inside ingredients", props.ingredients);
     let ingredients = props.ingredients.map( (ingredient,index)=>{
       console.log("This is an ingredient", ingredient);
       return (
         <p key={index}> {ingredient} </p>
       )
     } )
-     
-    var openPanels = props.panelOpen.map( obj=> obj.recipeIndex);
+    
+    
+    var openPanels =   props.panelOpen.map( obj=> obj.recipeIndex);
   
     if ( openPanels.indexOf(props.recipeIndex ) > -1 ){
 

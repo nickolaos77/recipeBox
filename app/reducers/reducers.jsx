@@ -18,10 +18,8 @@ export const crudRecReducer = (state = [], action)=>{
             }
         
         case 'ADD_RECIPES':{
-          return [
-            ...state,
-            action.recipes
-          ];
+          return [...action.recipes];
+          
         }    
         case 'EDIT_RECIPE':
             {//create a block of scope

@@ -68,6 +68,7 @@
 	var redux = __webpack_require__(159);
 	var actions = __webpack_require__(212);
 	var store = __webpack_require__(214).configure();
+	var RecipeAPI = __webpack_require__(216);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRedux.Provider,
@@ -79,26 +80,39 @@
 
 	var unsubscribe = store.subscribe(function () {
 	  var state = store.getState();
-	  console.log(state);
+	  console.log("state", state);
+	  RecipeAPI.setRecipes(state.recipes);
 	});
+
+	var initialRecipes = RecipeAPI.getRecipes();
+	console.log("initialRecipes", initialRecipes);
+	store.dispatch(actions.addRecipesAG(initialRecipes));
+	//check if this is the first rendering of the page
+	var initialized = localStorage.getItem('initialized');
+	if (initialized !== 'initialized') {
+	  store.dispatch(actions.expandPanelAG(1));
+	  store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	  store.dispatch(actions.addRecAG('spanakoryzo', ['spanaki', 'ryzi']));
+	  localStorage.setItem('initialized', 'initialized');
+	}
 
 	// Create Actions
 
 	//Dispatch the actions
-
-	store.dispatch(actions.expandPanelAG(1));
-	store.dispatch(actions.contractPanelAG(1));
-	store.dispatch(actions.expandPanelAG(1));
-	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
-	store.dispatch(actions.addRecAG('spanakoryzo', ['spanaki', 'ryzi']));
-	store.dispatch(actions.delRecAG(1));
-	store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
-	store.dispatch(actions.editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'], 3));
-	store.dispatch(actions.expandPanelAG(3));
-	store.dispatch(actions.showModalAG());
-	store.dispatch(actions.hideModalAG());
-	store.dispatch(actions.expandPanelAG(2));
-	store.dispatch(actions.contractPanelAG(3));
+	//
+	//store.dispatch(actions.expandPanelAG(1));
+	//store.dispatch(actions.contractPanelAG(1));
+	//store.dispatch(actions.expandPanelAG(1));
+	//store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	//store.dispatch(actions.addRecAG('spanakoryzo', ['spanaki', 'ryzi']));
+	//store.dispatch(actions.delRecAG(1));
+	//store.dispatch(actions.addRecAG('makaronia', ['makaronia', 'saltsa ntomata']));
+	//store.dispatch(actions.editRecAG('makaronia', ['makaronia', 'saltsa ntomata', 'kaseri'],9999));
+	//store.dispatch(actions.expandPanelAG(3));
+	//store.dispatch(actions.showModalAG());
+	//store.dispatch(actions.hideModalAG());
+	//store.dispatch(actions.expandPanelAG(2));
+	//store.dispatch(actions.contractPanelAG(3));
 
 /***/ },
 /* 1 */
@@ -22446,9 +22460,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var RecipeList = function RecipeList(props) {
+	  console.log("recipes", props.recipes);
 	  var recipes = props.recipes.map(function (recipe, index) {
-	    console.log('The recipe name is: ', recipe.recipeName);
-	    return _react2.default.createElement(_Recipe2.default, { key: recipe.recipeIndex, name: recipe.recipeName, ingredients: recipe.ingredients,
+	    console.log('The recipe is: ', recipe);
+	    return _react2.default.createElement(_Recipe2.default, { key: index, name: recipe.recipeName, ingredients: recipe.ingredients,
 	      recipeIndex: recipe.recipeIndex });
 	  });
 
@@ -22500,6 +22515,7 @@
 	var actions = __webpack_require__(212);
 
 	var Recipe = function Recipe(props) {
+	  console.log("passing inside ingredients", props.ingredients);
 	  var ingredients = props.ingredients.map(function (ingredient, index) {
 	    console.log("This is an ingredient", ingredient);
 	    return _react2.default.createElement(
@@ -22783,6 +22799,7 @@
 	};
 
 	var addRecipesAG = exports.addRecipesAG = function addRecipesAG(recipes) {
+	    console.log("Action generator", recipes);
 	    return {
 	        type: 'ADD_RECIPES',
 	        recipes: recipes
@@ -23036,7 +23053,7 @@
 
 	        case 'ADD_RECIPES':
 	            {
-	                return [].concat(_toConsumableArray(state), [action.recipes]);
+	                return [].concat(_toConsumableArray(action.recipes));
 	            }
 	        case 'EDIT_RECIPE':
 	            {
@@ -23107,6 +23124,36 @@
 	        default:
 	            return state;
 	    }
+	};
+
+/***/ },
+/* 216 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  setRecipes: function setRecipes(recipes) {
+	    if (Array.isArray(recipes)) {
+	      localStorage.setItem('recipes', JSON.stringify(recipes));
+	      console.log("Inside RecipeAPI", recipes);
+	      return recipes;
+	    }
+	  },
+	  getRecipes: function getRecipes() {
+	    var stringRecipes = localStorage.getItem('recipes');
+	    var recipes = [];
+	    try {
+	      recipes = JSON.parse(stringRecipes);
+	    } catch (e) {
+	      console.log(e);
+	    }
+	    if (Array.isArray(recipes)) {
+	      return recipes;
+	    } else {
+	      return [];
+	    }
+	  }
 	};
 
 /***/ }
